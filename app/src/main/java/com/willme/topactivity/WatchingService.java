@@ -4,7 +4,6 @@ import android.annotation.TargetApi;
 import android.app.ActivityManager;
 import android.app.ActivityManager.RunningTaskInfo;
 import android.app.AlarmManager;
-import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
@@ -21,19 +20,18 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public class WatchingService extends Service {
+    private static final int TIME_DELAY = 1000;
 
     private Handler mHandler = new Handler();
-    private  ActivityManager mActivityManager;
+    private ActivityManager mActivityManager;
     private String text = null;
     private Timer timer;
-    private NotificationManager mNotiManager;
-    private final int NOTIF_ID = 1;
+
 
     @Override
     public void onCreate() {
         super.onCreate();
         mActivityManager = (ActivityManager) getSystemService(ACTIVITY_SERVICE);
-        mNotiManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
     }
 
     @Override
@@ -45,12 +43,12 @@ public class WatchingService extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
         if (timer == null) {
             timer = new Timer();
-            timer.scheduleAtFixedRate(new RefreshTask(), 0, 500);
+            timer.scheduleAtFixedRate(new RefreshTask(), 0, TIME_DELAY);
         }
         return super.onStartCommand(intent, flags, startId);
     }
 
-    class RefreshTask extends TimerTask {
+    private final class RefreshTask extends TimerTask {
 
         @Override
         public void run() {
@@ -58,9 +56,15 @@ public class WatchingService extends Service {
             String act = rtis.get(0).topActivity.getPackageName() + "\n"
                     + rtis.get(0).topActivity.getClassName();
 
+/*            List<ActivityManager.RunningAppProcessInfo> itis = mActivityManager.getRunningAppProcesses();
+            String act = itis.get(0).processName + "\n"
+                    + itis.get(0).importanceReasonComponent.toString();*/
+
+            Log.w("包名详情", act);
+
             if (!act.equals(text)) {
                 text = act;
-                if(SPHelper.isShowWindow(WatchingService.this)){
+                if (SPHelper.isShowWindow(WatchingService.this)) {
 
                     mHandler.post(new Runnable() {
                         @Override
@@ -87,7 +91,7 @@ public class WatchingService extends Service {
         AlarmManager alarmService = (AlarmManager) getApplicationContext()
                 .getSystemService(Context.ALARM_SERVICE);
         alarmService.set(AlarmManager.ELAPSED_REALTIME,
-                SystemClock.elapsedRealtime() + 500,
+                SystemClock.elapsedRealtime() + TIME_DELAY,
                 restartServicePendingIntent);
         super.onTaskRemoved(rootIntent);
     }

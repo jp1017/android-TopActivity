@@ -38,9 +38,12 @@ public class TasksWindow {
         textView.setText(text);
         try {
             sWindowManager.addView(sView, sWindowParams);
-        } catch (Exception e) {}
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.N)
+        } catch (Exception e) {
+        }
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             QuickSettingTileService.updateTile(context);
+        }
     }
 
     public static void dismiss(Context context) {

@@ -34,6 +34,7 @@
         <service
             android:name=".WatchingService"
             android:enabled="@bool/use_watching_service" />
+
         <service
             android:name=".WatchingAccessibilityService"
             android:description="@string/app_name"
@@ -47,6 +48,7 @@
                 android:name="android.accessibilityservice"
                 android:resource="@xml/accessibility" />
         </service>
+
         <service
             android:name=".QuickSettingTileService"
             android:enabled="@bool/qs_tile_service_availability"

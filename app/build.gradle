@@ -1,21 +1,29 @@
 apply plugin: 'com.android.application'
 
 android {
+    signingConfigs {
+        sign {
+            keyAlias '11111111'
+            keyPassword '11111111'
+            storeFile file('../11111111.jks')
+            storePassword '11111111'
+        }
+    }
     compileSdkVersion 25
     buildToolsVersion '25.0.3'
-
     defaultConfig {
         applicationId "com.willme.topactivity"
         minSdkVersion 9
         targetSdkVersion 25
         versionCode 12
-        versionName "1.4.1"
+        versionName "1.4.2"
     }
-
     buildTypes {
         release {
             minifyEnabled true
+            shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.sign
         }
     }
 }

@@ -72,11 +72,11 @@ public class QuickSettingTileService extends TileService {
         }
     }
 
-    private void updateTile(){
-        if(WatchingAccessibilityService.getInstance() == null){
+    private void updateTile() {
+        if (WatchingAccessibilityService.getInstance() == null) {
             getQsTile().setState(Tile.STATE_INACTIVE);
         } else {
-            getQsTile().setState(SPHelper.isShowWindow(this)? Tile.STATE_ACTIVE:Tile.STATE_INACTIVE);
+            getQsTile().setState(SPHelper.isShowWindow(this) ? Tile.STATE_ACTIVE : Tile.STATE_INACTIVE);
         }
         getQsTile().updateTile();
     }
